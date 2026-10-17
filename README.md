@@ -25,6 +25,7 @@
 | `ae/` | AE パネルの生成エンジンのソース |
 | `cep/` | CEP 版パネルの外枠（manifest・AE との橋渡し・インストール用ファイル） |
 | `docs/EXPRESSION_PACKS.md` | 表現部品（パック）を追加する人向けのガイド |
+| `tools/openverse_audio.py` / `docs/OPENVERSE_AUDIO.md` | ショート動画制作向けのOpenverse効果音・BGM候補検索（商用向けライセンスで絞り込み、候補ごとに出典を記録）。本体への自動合成は未対応 |
 
 <details>
 <summary><h3>動作環境</h3></summary>
