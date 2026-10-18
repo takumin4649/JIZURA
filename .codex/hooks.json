@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'r=$(git rev-parse --show-toplevel); python3 -X utf8 \"$r/.codex/worklog/runner.py\"'",
+            "commandWindows": "powershell.exe -NoProfile -Command \"$r = git rev-parse --show-toplevel; python -X utf8 (Join-Path $r '.codex/worklog/runner.py')\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'r=$(git rev-parse --show-toplevel); python3 -X utf8 \"$r/.codex/worklog/runner.py\"'",
+            "commandWindows": "powershell.exe -NoProfile -Command \"$r = git rev-parse --show-toplevel; python -X utf8 (Join-Path $r '.codex/worklog/runner.py')\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'r=$(git rev-parse --show-toplevel); python3 -X utf8 \"$r/.codex/worklog/runner.py\"'",
+            "commandWindows": "powershell.exe -NoProfile -Command \"$r = git rev-parse --show-toplevel; python -X utf8 (Join-Path $r '.codex/worklog/runner.py')\"",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

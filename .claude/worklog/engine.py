@@ -242,6 +242,7 @@ def instruct(repo: Path, sid: str, reason: str, data: dict):
     fallback = repo / "AGENTS.md"
     rule = str(canonical if canonical.is_file() else fallback)
     transcript = data.get("transcript_path") or "未取込"
+    provider = os.environ.get("WORKLOG_PROVIDER", "claude-code")
     return (
         "ワークログを自動完成させてから返答してください。理由: " + reason + "。"
         "必ず正本 " + rule + " の第3章と各リポジトリのAGENTS.md/CLAUDE.mdを確認。"
@@ -251,7 +252,7 @@ def instruct(repo: Path, sid: str, reason: str, data: dict):
         "採用・不採用の理由、数字と取得元、素材、変更ファイル、残課題、次の手を記録。"
         "ユーザー指示の原文は改変しない。原文は会話の全文を正本とする。"
         "証拠不足は未確認と明記し、成功を創作しない。"
-        "provider: claude-code、session: " + sid + "、transcript: " + str(transcript) + "。"
+        "provider: " + provider + "、session: " + sid + "、transcript: " + str(transcript) + "。"
         "実行モデルは現在のモデル名。FANZAでは独自の段階も記録。"
         "ワークログを書いたら同じ作業に属する安全な変更だけをコミット・pushする。"
         "別のセッションの変更や未確認ファイルは含めない。"
@@ -315,7 +316,8 @@ def sync(repo: Path, changed: list[str], baseline: dict, sid: str) -> str:
         names = {s.decode("utf-8", "replace") for s in staged.stdout.split(b"\0") if s}
         if names != set(changed):
             return "意図しないステージ差分があるため保留"
-        result = command(repo, "commit", "-m", "work-log: Claude Codeの作業記録と変更を保存", timeout=25)
+        provider = os.environ.get("WORKLOG_PROVIDER", "claude-code")
+        result = command(repo, "commit", "-m", "work-log: " + provider + "の作業記録と変更を保存", timeout=25)
         if result.returncode:
             return "commit失敗"
         result = command(repo, "push", "-q", "origin", "HEAD:refs/heads/" + branch, timeout=30)
